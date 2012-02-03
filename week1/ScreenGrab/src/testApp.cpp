@@ -57,7 +57,7 @@ void testApp::update(){
 		if (finder.blobs.size() > 0) {
 			
 			//then make a new image that is the width and height of the face bounding box
-			imageFace.allocate(finder.blobs[0].boundingRect.x, finder.blobs[0].boundingRect.y, OF_IMAGE_COLOR);
+			imageFace.allocate(finder.blobs[0].boundingRect.width, finder.blobs[0].boundingRect.height, OF_IMAGE_COLOR);
 			
 			unsigned char * origPixels = image.getPixels();
 		
@@ -120,6 +120,7 @@ void testApp::draw(){
 	for(int i = 0; i < finder.blobs.size(); i++) {
 		
 		ofRect(finder.blobs[i].boundingRect);
+		imageFace.rotate90(90);
 		imageFace.draw(finder.blobs[0].boundingRect.x, finder.blobs[0].boundingRect.y, finder.blobs[0].boundingRect.width, finder.blobs[0].boundingRect.width);
 	}
 	
