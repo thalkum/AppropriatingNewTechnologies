@@ -57,9 +57,9 @@ void testApp::update(){
 		if (finder.blobs.size() > 0) {
 			
 			//then make a new image that is the width and height of the face bounding box
-			imageFace.allocate(finder.blobs[0].boundingRect.x, finder.blobs[0].boundingRect.y, OF_IMAGE_COLOR_ALPHA);
+			imageFace.allocate(finder.blobs[0].boundingRect.x, finder.blobs[0].boundingRect.y, OF_IMAGE_COLOR);
 			
-			//unsigned char * origPixels = image.getPixels();
+			unsigned char * origPixels = image.getPixels();
 		
 			//make a new data type for the new image's pixels
 			unsigned char * copyPixels = imageFace.getPixels();
@@ -68,23 +68,24 @@ void testApp::update(){
 			int imageFaceIndex = 0;
 
 			//loop through the first image's cols and rows
-			for(int row = 0; row < image.getHeight(); row++) {
-				for(int col = 0; col < image.getWidth(); col++) {
+			for(int x = 0; x < image.getWidth(); x++) {
+				for(int y = 0; y < image.getHeight(); y++) {
+				
 				
 					//keep track of index
-					int offset = row * image.getWidth() + col;
+					int i = y * image.getWidth() + x;
 				
 					//check to see if "pixel" is within bounds of face detected Rect
-					if (row > finder.blobs[0].boundingRect.x && 
-						row < (finder.blobs[0].boundingRect.x + finder.blobs[0].boundingRect.width) && 
-						col < finder.blobs[0].boundingRect.y && 
-						col > (finder.blobs[0].boundingRect.y + finder.blobs[0].boundingRect.height)) {
+					if (x > finder.blobs[0].boundingRect.x && 
+						x < (finder.blobs[0].boundingRect.x + finder.blobs[0].boundingRect.width) && 
+						y > finder.blobs[0].boundingRect.y && 
+						y < (finder.blobs[0].boundingRect.y + finder.blobs[0].boundingRect.height)) {
 					
 						//if so, then copy the RGBA pixels from the original data to new image pixels
-						data[offset*4] = copyPixels[imageFaceIndex*4];
-						data[offset*4 + 1] = copyPixels[imageFaceIndex*4 + 1];
-						data[offset*4 + 2] = copyPixels[imageFaceIndex*4 + 2];
-						data[offset*4 + 3] = copyPixels[imageFaceIndex*4 + 3];
+						copyPixels[imageFaceIndex * 3] =	 origPixels[i * 3];
+						copyPixels[imageFaceIndex * 3 + 1] = origPixels[i * 3 + 1];
+						copyPixels[imageFaceIndex * 3 + 2] = origPixels[i * 3 + 2];
+						//copyPixels[imageFaceIndex * 4 + 3] = 255;
 					
 						//increment to the next pixel that satisfies the bounding box
 						imageFaceIndex++;
@@ -110,13 +111,16 @@ void testApp::update(){
 void testApp::draw(){
 	image.draw(0,0, ofGetWidth(), ofGetHeight());
 	
+		
 	
 	ofNoFill();
 	
 	//for each face "blob" we found, draw a rectangle around the face
     //#2
 	for(int i = 0; i < finder.blobs.size(); i++) {
+		
 		ofRect(finder.blobs[i].boundingRect);
+		imageFace.draw(finder.blobs[0].boundingRect.x, finder.blobs[0].boundingRect.y, finder.blobs[0].boundingRect.width, finder.blobs[0].boundingRect.width);
 	}
 	
 }
