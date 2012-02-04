@@ -25,7 +25,8 @@ class testApp : public ofBaseApp{
 		ofImage		image;
 		ofImage		imageFace;
 		ofxCvHaarFinder finder;	 // object used to detect haar features
-		float	faceWidth;
-		float	faceHeight;
+		float captureWidth;
+		float captureHeight
+	;
 
 };

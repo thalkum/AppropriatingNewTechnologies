@@ -7,14 +7,15 @@ extern "C" {
 //--------------------------------------------------------------
 void testApp::setup(){
 	
-	//faceWidth = 200;
-	//faceHeight = 200;
+	
+	captureWidth = ofGetWidth();
+    captureHeight = ofGetHeight();
 
 	finder.setup("haarcascade_frontalface_default.xml");
 	//CGContextRef cgctx = NULL;
 	//ofSetVerticalSync(true);
 	//tex.allocate(300,300, GL_RGBA);
-	image.allocate(300, 300, OF_IMAGE_COLOR);
+	image.allocate(captureWidth, captureHeight, OF_IMAGE_COLOR);
 	//pixels.allocate(300, 300, OF_IMAGE_COLOR);
 	//imageFace = image;
 	
@@ -25,13 +26,13 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	
-	int w = 300;
-	int h = 300;
+	captureWidth = ofGetWidth();
+    captureHeight = ofGetHeight();
 	
-	unsigned char * data = pixelsBelowWindow(ofGetWindowPositionX(),ofGetWindowPositionY(),w,h);
+	unsigned char * data = pixelsBelowWindow(ofGetWindowPositionX(),ofGetWindowPositionY(),captureWidth,captureHeight);
 	
 	// now, let's get the R and B data swapped, so that it's all OK:
-	for (int i = 0; i < w*h; i++){
+	for (int i = 0; i < captureWidth*captureHeight; i++){
 		
 		unsigned char r = data[i*4]; // mem A  
 		
@@ -46,7 +47,7 @@ void testApp::update(){
 		//tex.loadData(data, 300, 300, GL_RGBA);
 		//tex.readToPixels(pixels);
 		//image = pixels;
-		image.setFromPixels(data, 300, 300, OF_IMAGE_COLOR_ALPHA, true);
+		image.setFromPixels(data, captureWidth, captureHeight, OF_IMAGE_COLOR_ALPHA, true);
 		image.setImageType(OF_IMAGE_COLOR);
 		image.update();
 		
